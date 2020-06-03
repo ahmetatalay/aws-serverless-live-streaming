@@ -128,7 +128,7 @@ $ amplify add api
 
 The CLI should open this GraphQL schema in your text editor.
 
-__amplify/backend/api/Postagram/schema.graphql__
+__amplify/backend/api/serverlesslivestreaming/schema.graphql__
 
 Update the schema to the following:   
 
