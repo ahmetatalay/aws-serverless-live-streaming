@@ -1,68 +1,186 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Serverless Live Streaming
+This is Live Streaming, VOD and Voting / Comment system which uses React, Amplify and Graphql with Appsync.
 
-## Available Scripts
+![Serverless Live Streaming](images/ServerlessLiveStreaming.png)
 
-In the project directory, you can run:
+## Getting Started 
+Install Npm dependencies
 
-### `npm start`
+```bash
+$ npm install
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Installing the CLI & Initializing a new AWS Amplify Project
 
-### `npm test`
+### Installing the CLI
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Next, we'll install the AWS Amplify CLI and Amplify Video package:
 
-### `npm run build`
+```bash
+$ npm install -g @aws-amplify/cli
+$ npm install -g amplify-category-video 
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Now we need to configure the CLI with our credentials.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+> If you'd like to see a video walkthrough of this configuration process, click [here](https://www.youtube.com/watch?v=fWbM5DLh25U).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+ amplify configure
 
-### `npm run eject`
+- Specify the AWS Region: us-east-1 || us-west-2 || eu-central-1
+- Specify the username of the new IAM user: amplify-cli-user
+> In the AWS Console, click Next: Permissions, Next: Tags, Next: Review, & Create User to create the new IAM user. Then, return to the command line & press Enter.
+- Enter the access key of the newly created user:   
+? accessKeyId: (<YOUR_ACCESS_KEY_ID>)  
+? secretAccessKey:  (<YOUR_SECRET_ACCESS_KEY>)
+- Profile Name: amplify-cli-user
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Initializing Amplify
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+$ amplify init
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Enter a name for the project: serverlesslivestreaming
+- Enter a name for the environment: dev
+- Choose your default editor: Visual Studio Code (or your default editor)
+- Please choose the type of app that youre building: javascript
+- What javascript framework are you using: react
+- Source Directory Path: src
+- Distribution Directory Path: build
+- Build Command: npm run-script build
+- Start Command: npm run-script start
+- Do you want to use an AWS profile? Y
+- Please choose the profile you want to use: amplify-cli-user
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The Amplify CLI has iniatilized a new project & you will see a new folder: __amplify__ & a new file called `aws-exports.js` in the __src__ directory. These files hold your project configuration.
 
-## Learn More
+To view the status of the amplify project at any time, you can run the Amplify `status` command:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+$ amplify status
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To view the amplify project in the Amplify console at any time, run the `console` command:
 
-### Code Splitting
+```sh
+$ amplify console
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Adding a Cognito Authentication
 
-### Analyzing the Bundle Size
+To add a Cognito for User Authentication, we can use the following command:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```sh
+$ amplify add auth
 
-### Making a Progressive Web App
+ Do you want to use the default authentication and security configuration:  Default configuration
+ How do you want users to be able to sign in: Username
+ Do you want to configure advanced settings? (Use arrow keys): No, I am done
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
 
-### Advanced Configuration
+## Adding a Live Streaming Video
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+To add a Video for Live Streaming, we can use the following command:
 
-### Deployment
+```sh
+$ amplify add video
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+? Please select from one of the below mentioned services: Livestream
+? Provide a friendly name for your resource to be used as a label for this category in the project: serverlesslivestreaming
+? Do you want to modify any advanced video encoding parameters? No
+? Input Security Group:  0.0.0.0/0
+? MediaLive ingest type:  MP4_FILE
+? Encoding Profile:  FULL (6 renditions)
+? Auto Start:  Yes
+? Provide URL to the MP4 file:  https://www.radiantmediaplayer.com/media/bbb-360p.mp4
+? Where do you want to stream to? MediaPackage
+? Output streaming standards. MediaPackage supports HLS, DASH, MSS, and/or CMAF:  HLS
+? Specify catch-up TV window:  86400
+? Create distribution:  Yes
+? Cloud Front Price Class:  Price Class 100
+? S3 bucket for CloudFront Logs: (Must already exist):  streaminglogs1234
+? S3 Prefix (Folder) for CloudFront logs:  cf_logs/
+```
 
-### `npm run build` fails to minify
+## Adding an AWS AppSync GraphQL API for Video Replays and  Comments
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+To add a GraphQL API, we can use the following command:
+
+```sh
+$ amplify add api
+
+? Please select from one of the above mentioned services: GraphQL
+? Provide API name: serverlesslivestreaming
+? Choose the default authorization type for the API: API key
+? Enter a description for the API key: serverlesslivestreaming
+? After how many days from now the API key should expire (1-365): 365 (or your preferred expiration)
+? Do you want to configure advanced settings for the GraphQL API: No
+? Do you have an annotated GraphQL schema? N 
+? Do you want a guided schema creation? Y
+? What best describes your project: Single object with fields
+? Do you want to edit the schema now? (Y/n) Y
+```
+
+The CLI should open this GraphQL schema in your text editor.
+
+__amplify/backend/api/Postagram/schema.graphql__
+
+Update the schema to the following:   
+
+```graphql
+type Replay @model{
+    id: ID!
+    name: String!
+    url: String!
+    likes: Int!
+    dislikes: Int!
+    comments: [Comment] @connection(name: "ReplayComments")
+}
+
+type Comment @model {
+    id: ID!
+    content: String
+    username: String!
+    replay: Replay @connection(name: "ReplayComments")
+}
+```
+
+### Deploying the Amplify resources
+
+To deploy the Amplify resources, run the push command:
+
+```
+$ amplify push
+
+? Are you sure you want to continue? Y
+
+# You will be walked through the following questions for GraphQL code generation
+? Do you want to generate code for your newly created GraphQL API? Y
+? Choose the code generation language target: javascript
+? Enter the file name pattern of graphql queries, mutations and subscriptions: src/graphql/**/*.js
+? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions? Yes
+? Enter maximum statement depth [increase from default if your schema is deeply nested]: 2
+```
+
+Now the Amplify Video, Auth and Api is deployed and you can start interacting with it!
+
+
+## Start the Application
+```
+$ npm start
+```
+
+## Here is the UI from the app
+
+![Serverless Live Streaming](images/livepage.png)
+![Serverless Live Streaming](images/replays.png)
+![Serverless Live Streaming](images/replay.png)
+![Serverless Live Streaming](images/clipauth.png)
+
+
+

@@ -1,17 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import App from './components/App';
+import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
+import aws_config from './aws-exports';
+import { BrowserRouter } from 'react-router-dom'
+import { ApolloProvider } from 'react-apollo'
+import Amplify from 'aws-amplify'
+Amplify.configure(aws_config)
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const client = new AWSAppSyncClient({
+  url: aws_config.aws_appsync_graphqlEndpoint,
+  region: aws_config.aws_appsync_region,
+  auth: {
+      type: AUTH_TYPE.API_KEY,
+      apiKey: aws_config.aws_appsync_apiKey,
+  }
+});
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(  
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </BrowserRouter>, document.getElementById('root')
+  );
+  
