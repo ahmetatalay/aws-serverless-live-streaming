@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 amplify*
-src/aws-video-exports.js
+*aws-video-exports.js
 package-lock.json*
 
 # testing

@@ -173,6 +173,8 @@ To deploy the Amplify resources, run the push command:
 
 ```
 $ amplify push
+
+
 ✔ All resources copied.
 ✔ Successfully pulled backend environment dev from the cloud.
 Current Environment: dev
@@ -197,7 +199,20 @@ Current Environment: dev
 
 Now the Amplify Video, Auth and Api is deployed and you can start interacting with it!
 
+### Some manual actions to forward streaming source to VOD
+- Go to Elemental Medialive console, and select the channel which is created by Amplify, then Stop the channel
+- Add second Output group as `Archive`
+  ![Channel Create](images/channel0.png)
+- Add the S3 Bucket URLs by created `Amplify Video OnDemand` module. Go the S3 Console, and get the bucket name.
+   ![Channel Create 2](images/channel1.png)
+- URLs must be started with `s3ssl://`.
+- Add Audio option in Output of Archive group as well.
+   ![Channel Create 3](images/channel2.png)
+- Finally update the Channel and Start it.
+- Go to S3 Console, and select the input VOD bucket which created by `Amplify Video OnDemand` module. Then, modify the S3 Event trigger path for delivery prevfx and suffix: `.ts` files.
+  ![S3 Event](images/s3event.png)
 
+ 
 ## Start the Application
 ```
 $ npm start
@@ -210,5 +225,5 @@ $ npm start
 ![Serverless Live Streaming](images/replay.png)
 ![Serverless Live Streaming](images/clipauth.png)
 
-
-
+Here is the Mediaconvert Job, triggered by Lambda when Medialive sends streaming to S3.
+![Mediaconvert](images/mediaconvert.png)
