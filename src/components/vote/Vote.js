@@ -1,5 +1,5 @@
 import React from 'react';
-import { updateReplay } from '../graphql/mutations';
+import { updateReplay } from '../../graphql/mutations';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Button } from 'semantic-ui-react';

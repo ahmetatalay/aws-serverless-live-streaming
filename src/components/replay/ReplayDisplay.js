@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
-import { getReplay } from '../graphql/queries';
+import { getReplay } from '../../graphql/queries';
 import gql from 'graphql-tag';
 import Replay from './Replay';
 import { Dimmer, Loader } from 'semantic-ui-react';

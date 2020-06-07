@@ -1,9 +1,9 @@
 import React from 'react';
 import {Container,  Header,Comment} from 'semantic-ui-react';
-import PlayerDisplay from './player'
-import Vote from './Vote'
-import CreateComment from './comment/CreateComment'
-import ListComments from './comment/ListComments'
+import PlayerDisplay from '../player'
+import Vote from '../vote/Vote'
+import CreateComment from '../comment/CreateComment'
+import ListComments from '../comment/ListComments'
 
 
 class Replay extends React.Component {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import LiveDisplay from './LiveDisplay';
-import ReplayDisplay from './ReplayDisplay';
-import ReplaysDisplay from './ReplaysDisplay';
-import ClipDisplay from './ClipDisplay';
-import NavbarDisplay from './NavbarDisplay'
+import LiveDisplay from './live/LiveDisplay';
+import ReplayDisplay from './replay/ReplayDisplay';
+import ReplaysDisplay from './replay/ReplaysDisplay';
+import ClipDisplay from './clip/ClipDisplay';
+import NavbarDisplay from './navbar/NavbarDisplay'
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 // import { signUpConfig } from './Auth';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react'
-import aws_video_config from '../aws-video-exports.js';
-import PlayerDisplay from './player'
+import aws_video_config from '../../aws-video-exports.js';
+import PlayerDisplay from '../player'
 
 const videoUrl = aws_video_config.awsOutputLiveHLS;
 

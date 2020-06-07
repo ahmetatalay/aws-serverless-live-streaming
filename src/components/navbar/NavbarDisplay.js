@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Image,Icon } from 'semantic-ui-react'
-import logoImage from '../assets/img/logo.png';
+import logoImage from '../../assets/img/logo.png';
 import { withRouter } from 'react-router'
-import Logout from './Logout'
+import Logout from '../auth/Logout'
 
 class NavbarDisplay extends Component {
     state = {

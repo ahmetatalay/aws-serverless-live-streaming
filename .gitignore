@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 amplify*
+src/aws-video-exports.js
 package-lock.json*
 
 # testing
@@ -34,8 +35,9 @@ build/
 dist/
 node_modules/
 aws-exports.js
+aws-video-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplify-build-config.json
 amplify-gradle-config.json
-amplifyxc.config
+amplifytools.xcconfig

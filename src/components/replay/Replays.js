@@ -1,9 +1,8 @@
 import React from 'react';
 import {Card, Container, Header, Image } from 'semantic-ui-react';
-import Vote from './Vote'
+import Vote from '../vote/Vote'
 import { Link } from 'react-router-dom';
-import posterImage from '../assets/img/poster.jpg';
-import imageTest from '../assets/img/ahmet.jpg';
+import posterImage from '../../assets/img/poster.jpg';
 
 class Replays extends React.Component {
     componentDidMount() {

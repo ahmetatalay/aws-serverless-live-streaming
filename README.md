@@ -27,7 +27,7 @@ Now we need to configure the CLI with our credentials.
 > If you'd like to see a video walkthrough of this configuration process, click [here](https://www.youtube.com/watch?v=fWbM5DLh25U).
 
 ```sh
- amplify configure
+$ amplify configure
 
 - Specify the AWS Region: us-east-1 || us-west-2 || eu-central-1
 - Specify the username of the new IAM user: amplify-cli-user
@@ -43,7 +43,7 @@ Now we need to configure the CLI with our credentials.
 ```bash
 $ amplify init
 
-- Enter a name for the project: serverlesslivestreaming
+- Enter a name for the project: serverlesslivestream
 - Enter a name for the environment: dev
 - Choose your default editor: Visual Studio Code (or your default editor)
 - Please choose the type of app that youre building: javascript
@@ -88,23 +88,40 @@ $ amplify add auth
 To add a Video for Live Streaming, we can use the following command:
 
 ```sh
-$ amplify add video
+# This command will create S3 bucket for cloudfront logs
+$ aws s3 mb s3://<PUT UNIQUE BUCKET NAME>(i.e. serverlesslivestream1234)
+
+$ amplify add video
 
 ? Please select from one of the below mentioned services: Livestream
-? Provide a friendly name for your resource to be used as a label for this category in the project: serverlesslivestreaming
+? Provide a friendly name for your resource to be used as a label for this category in the project: serverlesslivestream
 ? Do you want to modify any advanced video encoding parameters? No
 ? Input Security Group:  0.0.0.0/0
 ? MediaLive ingest type:  MP4_FILE
 ? Encoding Profile:  FULL (6 renditions)
 ? Auto Start:  Yes
-? Provide URL to the MP4 file:  https://www.radiantmediaplayer.com/media/bbb-360p.mp4
+? Provide URL to the MP4 file:  http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4
 ? Where do you want to stream to? MediaPackage
 ? Output streaming standards. MediaPackage supports HLS, DASH, MSS, and/or CMAF:  HLS
 ? Specify catch-up TV window:  86400
 ? Create distribution:  Yes
 ? Cloud Front Price Class:  Price Class 100
-? S3 bucket for CloudFront Logs: (Must already exist):  streaminglogs1234
+? S3 bucket for CloudFront Logs: (Must already exist):  <YOUR UNIQUE BUCKET NAME(i.e. serverlesslivestream1234)>
 ? S3 Prefix (Folder) for CloudFront logs:  cf_logs/
+```
+
+## Adding a VOD  
+
+To add a Video for Video On Demand, we can use the following command:
+
+```sh
+$ amplify add video
+
+? Please select from one of the below mentioned services: Video On Demand (beta)
+? Provide a friendly name for your resource to be used as a label for this category in the project: serverlessvod
+? Select a system-provided encoding template, specify an already-created template name:  Default Encoding Template (Apple HLS @ 1080p30)
+? Is this a production enviroment? No
+? Do you want Amplify to create a new GraphQL API to manage your videos? No
 ```
 
 ## Adding an AWS AppSync GraphQL API for Video Replays and  Comments
@@ -114,21 +131,21 @@ To add a GraphQL API, we can use the following command:
 ```sh
 $ amplify add api
 
-? Please select from one of the above mentioned services: GraphQL
-? Provide API name: serverlesslivestreaming
-? Choose the default authorization type for the API: API key
-? Enter a description for the API key: serverlesslivestreaming
-? After how many days from now the API key should expire (1-365): 365 (or your preferred expiration)
-? Do you want to configure advanced settings for the GraphQL API: No
-? Do you have an annotated GraphQL schema? N 
-? Do you want a guided schema creation? Y
-? What best describes your project: Single object with fields
-? Do you want to edit the schema now? (Y/n) Y
+? Please select from one of the below mentioned services: GraphQL
+? Provide API name: serverlesslivestream
+? Choose the default authorization type for the API API key
+? Enter a description for the API key: serverlesslivestream
+? After how many days from now the API key should expire (1-365): 365
+? Do you want to configure advanced settings for the GraphQL API No, I am done.
+? Do you have an annotated GraphQL schema? No
+? Do you want a guided schema creation? Yes
+? What best describes your project: Single object with fields (e.g., “Todo” with ID, name, description)
+? Do you want to edit the schema now? Yes
 ```
 
 The CLI should open this GraphQL schema in your text editor.
 
-__amplify/backend/api/serverlesslivestreaming/schema.graphql__
+__amplify/backend/api/serverlesslivestream/schema.graphql__
 
 Update the schema to the following:   
 
@@ -156,14 +173,25 @@ To deploy the Amplify resources, run the push command:
 
 ```
 $ amplify push
+✔ All resources copied.
+✔ Successfully pulled backend environment dev from the cloud.
+Current Environment: dev
+
+| Category | Resource name                | Operation | Provider plugin   |
+| -------- | ---------------------------- | --------- | ----------------- |
+| Auth     | serverlesslivestream83a2c4e1 | Create    | awscloudformation |
+| Video    | serverlesslivestream         | Create    | awscloudformation |
+| Video    | serverlessvod                | Create    | awscloudformation |
+| Api      | serverlesslivestream         | Create    | awscloudformation |
 
 ? Are you sure you want to continue? Y
 
 # You will be walked through the following questions for GraphQL code generation
-? Do you want to generate code for your newly created GraphQL API? Y
+
+? Do you want to generate code for your newly created GraphQL API: Yes
 ? Choose the code generation language target: javascript
 ? Enter the file name pattern of graphql queries, mutations and subscriptions: src/graphql/**/*.js
-? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions? Yes
+? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions: Yes
 ? Enter maximum statement depth [increase from default if your schema is deeply nested]: 2
 ```
 

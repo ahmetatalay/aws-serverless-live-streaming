@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Container, Button } from 'semantic-ui-react'
-import aws_video_config from '../aws-video-exports.js';
-import PlayerDisplay from './player'
+import aws_video_config from '../../aws-video-exports.js';
+import PlayerDisplay from '../player'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag';
-import { createReplay } from '../graphql/mutations';
+import { createReplay } from '../../graphql/mutations';
 import { withAuthenticator } from '@aws-amplify/ui-react';
-import { signUpConfig } from './Auth';
+import { signUpConfig } from '../auth/Auth';
 
 const videoUrl = aws_video_config.awsOutputLiveHLS;
 

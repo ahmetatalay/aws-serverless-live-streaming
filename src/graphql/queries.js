@@ -40,29 +40,6 @@ export const getCommentByReplayId = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
-      id
-      content
-      username
-      replay {
-        id
-        name
-        url
-        likes
-        dislikes
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 
 export const listReplays = /* GraphQL */ `
   query ListReplays(
@@ -87,8 +64,29 @@ export const listReplays = /* GraphQL */ `
     }
   }
 `;
-
-
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      content
+      username
+      replay {
+        id
+        name
+        url
+        likes
+        dislikes
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const listComments = /* GraphQL */ `
   query ListComments(
     $filter: ModelCommentFilterInput
