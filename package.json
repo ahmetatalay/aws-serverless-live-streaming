@@ -4,9 +4,6 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^0.2.7",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "aws-amplify": "^3.0.11",
     "aws-amplify-react": "^4.1.10",
     "aws-appsync": "^1.7.1",
