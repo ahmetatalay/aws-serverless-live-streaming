@@ -197,6 +197,28 @@ Current Environment: dev
 ? Enter maximum statement depth [increase from default if your schema is deeply nested]: 2
 ```
 
+###### Update query
+Once graphql folder can be created in above step, then add below query to the `src/graphql/queries.js`
+
+```
+export const getCommentByReplayId = /* GraphQL */ `
+  query GetCommentByReplayId($id: ID!) {
+    getReplay(id: $id) {
+      comments {
+        items {
+          id
+          content
+          username
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+```
+
+
 Now the Amplify Video, Auth and Api is deployed and you can start interacting with it!
 
 ### Some manual actions to forward streaming source to VOD
