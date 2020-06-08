@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Button } from 'semantic-ui-react'
+import { Container, Button,Form } from 'semantic-ui-react'
 import aws_video_config from '../../aws-video-exports.js';
 import PlayerDisplay from '../player'
 import { Mutation } from 'react-apollo'
@@ -12,26 +12,36 @@ const videoUrl = aws_video_config.awsOutputLiveHLS;
 
 class NewReplay extends Component {
   state ={
-    loading: false
+    loading: false,
+    cliplength: 20,
+    replayName:""
   }
   constructor(props) {
       super(props);
       this.handleClick = this.handleClick.bind(this);
   }
   
+  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+
   handleClick = async (e,createReplay) => {
     e.preventDefault();
-      
-    const latency=30; //There is a latency of about 30 seconds due to IP streaming. This number can be adjusted based on observed latency for the operator.
-    const clipLength=20; //Keeping the Replay logic simple. Assume the clip length to be 20 seconds.
+
+    const { cliplength, replayName } = this.state
+
+    this.setState({ cliplength: cliplength, replayName: replayName })
+
+    console.log(this.state.cliplength)//You will get vlue here
+    console.log(this.state.replayName)//You will get vlue here
+
+    const latency=30; 
+    const clipLength=this.state.cliplength
     const d = new Date();
-    const n = Math.floor(d.getTime()/1000.0); //Get the UNIX epoch time in seconds
-    const start = n - (latency + clipLength); //Start of the clip in UNIX epoch seconds
-    const end = n - latency; //End of the clip in UNIX epoch seconds
-    const urlstr = videoUrl + '?start=' + start + '&end=' + end; //Encoded URL to get the Replay clip
-    const name = prompt('Enter Replay Name:'); //Get a name for the Replay clip from the operator. Note that the start and end time are already registered.
-    // console.log('Replay:', name);
-    // console.log('Url_Str:', urlstr);
+    const n = Math.floor(d.getTime()/1000.0);
+    const start = n - (latency + clipLength); 
+    const end = n - latency; 
+    const urlstr = videoUrl + '?start=' + start + '&end=' + end; 
+    const name = this.state.replayName
+
     const likes = 0;
     const dislikes = 0;
 
@@ -46,6 +56,7 @@ class NewReplay extends Component {
       }
     })
     alert('Replay created!');
+    this.setState({ cliplength: 30, replayName: '' })
   }
 
   
@@ -56,8 +67,33 @@ class NewReplay extends Component {
             {(createReplay, { data, loading, error }) => {
                 return (
                 <Container textAlign='justified'>
+                <Form onSubmit={(e) => this.handleClick(e,createReplay)}>
+                  <Form.Input
+                    width={6}
+                    label={`Clip Length: ${this.state.cliplength} sn `}
+                    min={0}
+                    max={60}
+                    step={5}
+                    name='cliplength'
+                    type='range'
+                    value={this.state.cliplength}
+                    onChange={this.handleChange}
+                  />
 
-                <Button loading={this.state.loading} content='Create New Replay' primary onClick={(e) => this.handleClick(e,createReplay)}/>
+                  <Form.Input
+                    required
+                    width={4}
+                    fluid
+                    label='Replay Name'
+                    name='replayName'
+                    value={this.state.replayName}
+                    onChange={this.handleChange}
+                  />
+
+                  <Button loading={this.state.loading} content='Create New Replay' primary />
+                </Form>
+
+                {/* <Button loading={this.state.loading} content='Create New Replay' primary onClick={(e) => this.handleClick(e,createReplay)}/> */}
                 </Container>
 
                 )
